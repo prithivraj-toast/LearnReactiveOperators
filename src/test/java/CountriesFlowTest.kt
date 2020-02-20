@@ -1,4 +1,4 @@
-import io.reactivex.rxjava3.core.Observable
+import io.kotlintest.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -89,26 +89,26 @@ class CountriesFlowTest {
         val expectedCurrencyValue = "EUR"
         val actualResult = mutableListOf<String>()
         flowAnswers
-            .getCurrencyUsdIfNotFound(countryRequested, allCountriesFlow)
+            .getCurrencyOrElseUSD(countryRequested, allCountriesFlow)
             .toCollection(actualResult)
         assert(actualResult.size == 1)
         assert(actualResult.first() == expectedCurrencyValue)
     }
 
     @Test
-    fun flow_GetCurrencyUsdIfNotFound_When_CountryNotFound() = runBlocking {
+    fun `flow GetCurrencyUsdIfNotFound When CountryNotFound`() = runBlocking {
         val countryRequested = "Senegal"
         val expectedCurrencyValue = "USD"
         val actualResult = mutableListOf<String>()
         flowAnswers
-            .getCurrencyUsdIfNotFound(countryRequested, allCountriesFlow)
+            .getCurrencyOrElseUSD(countryRequested, allCountriesFlow)
             .toCollection(actualResult)
         assert(actualResult.size == 1)
         assert(actualResult.first() == expectedCurrencyValue)
     }
 
     @Test
-    fun flow_SumPopulationOfCountries() = runBlocking {
+    fun `flow SumPopulationOfCountries reduce`() = runBlocking {
         // hint: use "reduce" operator
         val sum = flowAnswers
             .sumPopulationOfCountries(allCountriesFlow)
@@ -116,18 +116,17 @@ class CountriesFlowTest {
     }
 
     @Test
-    fun flow_sumPopulationOfCountries() = runBlocking {
+    fun flow_sumPopulationOfCountries_merge() = runBlocking {
         // hint: use "map" operator
         val sum = flowAnswers
             .sumPopulationOfCountries(
                 allCountriesFlow,
                 allCountriesFlow
             )
-        assert(
-            sum ==
-                CountriesTestProvider.sumPopulationOfAllCountries()
-                + CountriesTestProvider.sumPopulationOfAllCountries()
-        )
+
+        CountriesTestProvider.sumPopulationOfAllCountries() +
+            CountriesTestProvider.sumPopulationOfAllCountries() shouldBe sum
+
     }
 
     @Test
@@ -149,8 +148,8 @@ class CountriesFlowTest {
         val testObserver = flowAnswers
             .areEmittingSameSequences(
                allCountriesFlow,
-                allCountriesFlow
+                allCountriesDifferentSequence.asFlow()
             )
-        assert(!testObserver)
+        testObserver shouldBe false
     }
 }

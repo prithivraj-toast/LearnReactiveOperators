@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.reduce
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -27,15 +29,17 @@ class CountriesFlowAnswers {
             .drop(2)
             .take(2)
 
-    suspend fun isAllCountriesPopulationMoreThanOneMillion(countries: Flow<Country>): Boolean =
-        countries
-            .count { it.population < 1000000 } != 0
+    suspend fun isAllCountriesPopulationMoreThanOneMillion(countries: Flow<Country>): Boolean {
+        val count = countries
+            .count { it.population < 1000000 }
+        return count == 0
+    }
 
     fun listPopulationMoreThanOneMillion(countries: Flow<Country>): Flow<Country> =
         countries
             .filter { it.population > 1000000 }
 
-    fun getCurrencyUsdIfNotFound(
+    fun getCurrencyOrElseUSD(
         countryName: String,
         countries: Flow<Country>
     ): Flow<String> =
@@ -56,12 +60,14 @@ class CountriesFlowAnswers {
     suspend fun sumPopulationOfCountries(
         countryObservable1: Flow<Country>,
         countryObservable2: Flow<Country>
-    ): Long =
-        countryObservable1.combine(countryObservable2) { c1, c2 ->
-            return@combine listOf(c1, c2)
-        }.flatMapConcat { it.asFlow() }
-            .map { it.population }
-            .reduce { i1: Long, i2: Long -> i1 + i2 }
+    ): Long {
+        return countryObservable1.map { it.population }.toList().sum() +
+        countryObservable2.map { it.population }.toList().sum()
+
+//        combine(countryObservable2).
+//            .reduce { it1, it2 -> it1 + it2 }
+//        return null
+    }
 
     suspend fun areEmittingSameSequences(
         countryObservable1: Flow<Country>,
@@ -75,6 +81,6 @@ class CountriesFlowAnswers {
         countryObservable2.collect {
             b.add(it)
         }
-        return a.containsAll(b)
+        return a == b
     }
 }
