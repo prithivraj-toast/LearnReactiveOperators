@@ -1,4 +1,6 @@
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import java.util.ArrayList
 
 internal object CountriesTestProvider {
@@ -21,6 +23,16 @@ internal object CountriesTestProvider {
             }
         }
         return Observable.fromIterable(result)
+    }
+
+    fun countriesPopulationMoreThanOneMillionFlow(): Flow<Country> {
+        val result: MutableList<Country> = ArrayList()
+        for (country in countries) {
+            if (country.population > 1000000) {
+                result.add(country)
+            }
+        }
+        return result.asFlow()
     }
 
     fun populationOfCountries(): List<Long> {

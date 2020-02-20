@@ -1,6 +1,5 @@
-import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
@@ -11,9 +10,10 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.reduce
-import kotlinx.coroutines.flow.skip
 import kotlinx.coroutines.flow.take
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class CountriesFlowAnswers {
 
     fun listPopulationOfEachCountry(countries: Flow<Country>): Flow<Long> =
@@ -24,12 +24,12 @@ class CountriesFlowAnswers {
 
     fun listOnly3rdAnd4thCountry(countries: Flow<Country>): Flow<Country> =
         countries
-            .drop(3)
+            .drop(2)
             .take(2)
 
     suspend fun isAllCountriesPopulationMoreThanOneMillion(countries: Flow<Country>): Boolean =
         countries
-            .count { it.population > 1000000 } > 0
+            .count { it.population < 1000000 } != 0
 
     fun listPopulationMoreThanOneMillion(countries: Flow<Country>): Flow<Country> =
         countries

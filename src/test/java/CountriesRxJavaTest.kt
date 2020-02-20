@@ -61,7 +61,7 @@ class CountriesRxJavaTest {
 
     @Test
     fun rx_ListOnly3rdAnd4thCountry() {
-        val expectedResult: MutableList<Country?> = ArrayList()
+        val expectedResult: MutableList<Country> = ArrayList()
         expectedResult.add(allCountries[2])
         expectedResult.add(allCountries[3])
         val testObserver = rxJavaAnswers
@@ -172,7 +172,7 @@ class CountriesRxJavaTest {
 
     @Test
     fun rx_areEmittingSameSequences_Negative() {
-        val allCountriesDifferentSequence: List<Country?> =
+        val allCountriesDifferentSequence: List<Country> =
             ArrayList(allCountries)
         Collections.swap(allCountriesDifferentSequence, 0, 1)
         val testObserver = rxJavaAnswers
