@@ -62,8 +62,8 @@ class CountriesRxJavaTest {
     @Test
     fun rx_ListOnly3rdAnd4thCountry() {
         val expectedResult: MutableList<Country?> = ArrayList()
+        expectedResult.add(allCountries[2])
         expectedResult.add(allCountries[3])
-        expectedResult.add(allCountries[4])
         val testObserver = rxJavaAnswers
             .listOnly3rdAnd4thCountry(allCountriesObservable)
             .test()
