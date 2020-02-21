@@ -10,62 +10,47 @@ import java.util.concurrent.TimeUnit
 class CountriesRxJavaAnswers {
 
     fun countryNameInCapitals(country: Country): Single<String> =
-        Single.just(country.name.toUpperCase())
+        TODO()
 
     fun countCountries(countries: List<Country>): Single<Int> =
-        Single.just(countries.size)
+        TODO()
 
     fun listPopulationOfEachCountry(countries: Observable<Country>): Observable<Long> =
-        countries.map(Country::population)
+        TODO()
 
     fun listNameOfEachCountry(countries: Observable<Country>): Observable<String> =
-        countries.map(Country::name)
+        TODO()
 
     fun listOnly3rdAnd4thCountry(countries: Observable<Country>): Observable<Country> =
-        countries
-            .skip(3)
-            .take(2)
+        TODO()
 
     fun isAllCountriesPopulationMoreThanOneMillion(countries: Observable<Country>): Single<Boolean> =
-        countries
-            .all { (_, _, population) -> population > 1000000 }
+        TODO()
 
     fun listPopulationMoreThanOneMillion(countries: Observable<Country>): Observable<Country> =
-        countries
-            .filter { (_, _, population) -> population > 1000000 }
+        TODO()
 
     fun getCurrencyUsdIfNotFound(
         countryName: String,
         countries: Observable<Country>
     ): Observable<String> =
-        countries
-            .filter { it.name == countryName }
-            .map(Country::currency)
-            .defaultIfEmpty("USD")
+        TODO()
 
     fun sumPopulationOfCountries(countries: Observable<Country>): Maybe<Long> =
-        countries
-            .map(Country::population)
-            .reduce { i1: Long, i2: Long -> i1 + i2 }
+        TODO()
 
     fun mapCountriesToNamePopulation(countries: Observable<Country>): Single<Map<String, Long>> =
-        countries
-            .toMap(
-                Country::name,
-                Country::population
-            )
+        TODO()
 
     fun sumPopulationOfCountries(
         countryObservable1: Observable<Country>,
         countryObservable2: Observable<Country>
     ): Maybe<Long> =
-        Observable.merge(countryObservable1, countryObservable2)
-            .map(Country::population)
-            .reduce { i1: Long, i2: Long -> i1 + i2 }
+        TODO()
 
     fun areEmittingSameSequences(
         countryObservable1: Observable<Country>,
         countryObservable2: Observable<Country>
     ): Single<Boolean> =
-        Observable.sequenceEqual(countryObservable1, countryObservable2)
+        TODO()
 }
